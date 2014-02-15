@@ -1,6 +1,9 @@
 <?php
 /**
- * Tokenizer class
+ * Katar tokenizer class, used to generate an array of tokens from a string.
+ *
+ * The array is in the format [type, value], the type is always a string, the
+ * value can change, it is either a string or an array.
  */
 class KatarTokenizer
 {
@@ -29,7 +32,7 @@ class KatarTokenizer
         foreach(str_split($source) as $char) {
             $str .= $char;
 
-            // ignore all html
+            // ignore all html, it's basically whitespace
             if(strlen($str) == 1 && $str != '{' && $str != '@') {
                 $str = '';
                 $html .= $char;

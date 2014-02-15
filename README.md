@@ -20,6 +20,13 @@ Katar doesn't get in your way, you can mix PHP and Katar!
 
     <?php echo 'Now I don\'t want to use Katar, I just use PHP'; ?>
 
+# Usage
+
+There are several ways to include Katar in your project, with Composer's beeing
+the prefered one.
+
+## Using Katar with Composer
+
 # TODO
 There's still some polishing to do, as soon as It's finished I'll start the
 versioning :)
