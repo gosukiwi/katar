@@ -15,7 +15,7 @@ Each katar directive must be in it's own line, exept for the value directive
         <p>The age is bigger than 22</p>
     @else
         <p>The age is not bigger than 22</p>
-    @end
+    @endif
 
     @for $person in $people
         <p>{{ $person->name }}</p>
