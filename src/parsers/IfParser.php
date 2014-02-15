@@ -32,13 +32,5 @@ class IfParser extends BaseParser
         }
 
         return $output;
-       
-
-        switch($token[0]) {
-        case 'IF_OPEN':
-            return $this->parseIfOpen($token, $tokens);
-                case 'HTML':
-            return $this->parseHTML($token, $tokens);
-        }
     }
 }
