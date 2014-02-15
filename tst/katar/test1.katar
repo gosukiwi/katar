@@ -1,0 +1,6 @@
+<h1>Test Katar</h1>
+
+@if $name == 0
+    The name was <span>0</span>
+@endif
+
