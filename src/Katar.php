@@ -6,14 +6,14 @@ class Katar
             require_once(__DIR__ . '/KatarTokenizer.php');
         } else if($class == 'KatarParser') {
             require_once(__DIR__ . '/KatarParser.php');
-        }
+        } else {
+            $folders = array('tokens', 'parsers');
 
-        $folders = array('tokens', 'parsers');
-
-        foreach($folders as $folder) {
-            $file = __DIR__ . '/' . $folder . '/' . $class . '.php';
-            if(file_exists($file)) {
-                require_once($file);
+            foreach($folders as $folder) {
+                $file = __DIR__ . '/' . $folder . '/' . $class . '.php';
+                if(file_exists($file)) {
+                    require_once($file);
+                }
             }
         }
     }
