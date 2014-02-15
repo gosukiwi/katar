@@ -1,8 +1,8 @@
 <?php
-class HTMLParser
+class HTMLParser extends BaseParser
 {
     public function parse(&$tokens) {
-        $token = array_shift($tokens);
+        $token = $this->pop($tokens, 'HTML');
         return $token[1];
     }
 }

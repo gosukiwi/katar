@@ -1,8 +1,8 @@
 <?php
-class ValueParser
+class ValueParser extends BaseParser
 {
     public function parse(&$tokens) {
-        $token = array_shift($tokens);
+        $token = $this->pop($tokens, 'VALUE');
         return '<?php echo ' . $token[1] . '; ?>';
     }
 }

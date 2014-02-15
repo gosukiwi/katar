@@ -1,6 +1,15 @@
 <h1>Test Katar</h1>
 
-@if $name == 0
-    The name was <span>0</span>
+@if $age > 22
+    <p>The age is bigger than 22</p>
+@else
+    <p>The age is not bigger than 22</p>
 @endif
 
+<h2>For demonstration</h2>
+
+@for $person in $people
+    <p>{{ $person->name }}</p>
+@endfor
+
+<p>My name is {{ $name }}</p>

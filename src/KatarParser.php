@@ -8,16 +8,11 @@
 class KatarParser
 {
     private $tokenizer;
-    private $parsers;
+    private $expression_parser;
 
     public function __construct() {
         $this->tokenizer = null;
-        $this->parsers = array();
-
-        $this->parsers['HTML'] = new HTMLParser;
-        $this->parsers['VALUE'] = new ValueParser;
-        $this->parsers['FOR_OPEN'] = new ForParser;
-        $this->parsers['IF_OPEN'] = new IfParser;
+        $this->expression_parser = new ExpressionParser;
     }
 
     public function setTokenizer($tokenizer) {
@@ -35,21 +30,12 @@ class KatarParser
         }
 
         // parse tokens! let each parser consume as much as wanted 
+        // as the token array is passed by reference
         $output = '';
         while(!empty($tokens)) {
-            $output .= $this->parse($tokens);
+            $output .= $this->expression_parser->parse($tokens);
         }
 
         return $output;
-    }
-
-    private function parse(&$tokens) {
-        $type = $tokens[0][0];
-        if(!array_key_exists($type, $this->parsers)) {
-            throw new Exception("Invalid token: $type");
-        }
-
-        $parser = $this->parsers[$type];
-        return $parser->parse($tokens);
     }
 }

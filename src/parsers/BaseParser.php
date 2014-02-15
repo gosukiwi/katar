@@ -19,4 +19,12 @@ class BaseParser
 
         return $token;
     }
+
+    protected function peek(&$array) {
+        if(count($array) == 0) {
+            throw new Exception('Tokens array is empty, cannot peek');
+        }
+
+        return $array[0];
+    }
 }

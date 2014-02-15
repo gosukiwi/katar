@@ -3,41 +3,42 @@ class IfParser extends BaseParser
 {
     public function parse(&$tokens) {
         // consume required tokens
-        $token = $this->pop($tokens);
+        $if_open = $this->pop($tokens, 'IF_OPEN');
+        $output = '<?php if(' . $if_open[1] . '): ?>' . "\n";
+
+        $expression_parser = new ExpressionParser;
+        $seeking = true;
+         while($seeking) {
+            list($type, $value) = $this->peek($tokens);
+
+            switch($type) {
+            case 'IF_CLOSE':
+                $this->pop($tokens);
+                $output .= "<?php endif; ?>\n";
+                $seeking = false;
+                break;
+            case 'ELSE':
+                $this->pop($tokens);
+                $output .= "<?php else: ?>\n";
+                break;
+            case 'ELSE_IF':
+                $token = $this->pop($tokens);
+                $output .= "<?php elseif(" . $token[1] . "): ?>\n";
+                break;
+            default:
+                $output .= $expression_parser->parse($tokens);
+                break;
+            }
+        }
+
+        return $output;
+       
 
         switch($token[0]) {
         case 'IF_OPEN':
             return $this->parseIfOpen($token, $tokens);
-        case 'IF_CLOSE':
-            return $this->parseIfClose();
-        case 'ELSE':
-            return $this->parseElse($tokens);
-        case 'ELSE_IF':
-            return $this->parseElseIf($token, $tokens);
-        case 'HTML':
+                case 'HTML':
             return $this->parseHTML($token, $tokens);
         }
-    }
-
-    private function parseIfOpen($token, &$tokens) {
-        $value = '<?php if(' . $token[1] . '): ?>' . "\n";
-        return $value . $this->parse($tokens);
-    }
-
-    private function parseIfClose() {
-        return "<?php endif; ?>\n";
-    }
-
-    private function parseElse(&$tokens) {
-        return "<?php else: ?>\n" . $this->parse($tokens);
-    }
-
-    private function parseElseIf($token, &$tokens) {
-        $value = '<?php else if(' . $token[1] . '): ?>' . "\n";
-        return $value . $this->parse($tokens);
-    }
-
-    private function parseHTML($token, &$tokens) {
-        return $token[1] . $this->parse($tokens);
     }
 }

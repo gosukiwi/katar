@@ -1,30 +1,28 @@
 <?php
-class ForParser
+class ForParser extends BaseParser
 {
     public function parse(&$tokens) {
         // consume required tokens
-        $for_open_token = array_shift($tokens);
-        $html_token = array_shift($tokens);
-        $for_close_token = array_shift($tokens);
+        $for_open_token = $this->pop($tokens, 'FOR_OPEN');
 
-        if(@$html_token[0] !== 'HTML') {
-            throw new Exception('Expected HTML token, got ' . @$html_token[0]);
+        // create output so far
+        $output = '<?php foreach(' . $for_open_token[1][1] . ' as ' . 
+            $for_open_token[1][0] . '): ?>' . "\n";
+
+        $expression_parser = new ExpressionParser;
+        while(true) {
+            list($type, $value) = $this->peek($tokens);
+
+            if($type == 'FOR_CLOSE') {
+                // pop the element, and add the value
+                $this->pop($tokens);
+                $output .= '<?php endfor; ?>' . "\n";
+                break;
+            } else {
+                $output .= $expression_parser->parse($tokens);
+            }
         }
 
-        if(@$for_close_token[0] !== 'FOR_CLOSE') {
-            throw new Exception('Expected FOR_CLOSE token, got ' . @$for_close_token[0]);
-        }
-
-        // translate for_open token
-        $value = '<?php foreach(' . $for_open_token[1][1] . ' as ' . $for_open_token[1][0] . '): ?>' . "\n";
-
-        // translate html token, as it's simple enough just display
-        // the value, for better performance
-        $value .= $html_token[1];
-
-        // translate for_close token
-        $value .= '<?php endfor; ?>' . "\n";
-
-        return $value;
+        return $output;
     }
 }
