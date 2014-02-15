@@ -28,7 +28,7 @@ class Katar
             require_once(__DIR__ . '/KatarParser.php');
         } else {
             list($folder, $class) = explode('\\', $name);
-            $file = __DIR__ . '/' . strtolower($folder) . '/' . $class . '.php';
+            $file = __DIR__ . '/' . $folder . '/' . $class . '.php';
             if(file_exists($file)) {
                 require_once($file);
             }
