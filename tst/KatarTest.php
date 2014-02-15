@@ -1,7 +1,7 @@
 <?php
 require_once(__DIR__ . '/../src/Katar.php');
 
-class KatarParserTest extends PHPUnit_Framework_TestCase
+class KatarTest extends PHPUnit_Framework_TestCase
 {
     private $katar;
 
