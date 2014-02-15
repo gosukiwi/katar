@@ -1,13 +1,8 @@
 # Katar
-Katar is a simple PHP templating engine based on Blade. 
+Katar is a simple PHP templating engine based on Blade. It was designed to
+be simple, and have a clean syntax.
 
-    @if $age > 22
-        <p>The age is bigger than 22</p>
-    @else
-        <p>The age is not bigger than 22</p>
-    @end
-
-Each katar directive must be in it's own line, exept for the value directive
+Katar doesn't get in your way, you can mix PHP and Katar! 
 
 ## Syntax
 
@@ -22,6 +17,8 @@ Each katar directive must be in it's own line, exept for the value directive
     @endfor
 
     <p>My name is {{ $name }}</p>
+
+    <?php echo 'Now I don\'t want to use Katar, I just use PHP'; ?>
 
 # TODO
 There's still some polishing to do, as soon as It's finished I'll start the
