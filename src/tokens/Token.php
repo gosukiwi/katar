@@ -1,4 +1,6 @@
 <?php
+namespace Katar\Tokens;
+
 /**
  * Defines a type name and a regular expression to match
  * all valid strings this token represents.

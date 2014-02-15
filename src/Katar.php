@@ -7,6 +7,8 @@
  * @licence MIT
  */
 
+namespace Katar;
+
 /**
  * Main Katar class, autoloads all other classes and provides an API to easily
  * compile Katar source code onto PHP.
@@ -14,18 +16,21 @@
 class Katar
 {
     public static function autoload($class) {
-        if($class == 'KatarTokenizer') {
+        if(strpos($class, 'Katar\\') !== 0) {
+            return;
+        }
+
+        $name = str_replace('Katar\\', '', $class);
+
+        if($name == 'KatarTokenizer') {
             require_once(__DIR__ . '/KatarTokenizer.php');
-        } else if($class == 'KatarParser') {
+        } else if($name == 'KatarParser') {
             require_once(__DIR__ . '/KatarParser.php');
         } else {
-            $folders = array('tokens', 'parsers');
-
-            foreach($folders as $folder) {
-                $file = __DIR__ . '/' . $folder . '/' . $class . '.php';
-                if(file_exists($file)) {
-                    require_once($file);
-                }
+            list($folder, $class) = explode('\\', $name);
+            $file = __DIR__ . '/' . strtolower($folder) . '/' . $class . '.php';
+            if(file_exists($file)) {
+                require_once($file);
             }
         }
     }

@@ -1,4 +1,6 @@
 <?php
+namespace Katar\Tokens;
+
 class TokenIfClose extends Token
 {
     public function __construct() {

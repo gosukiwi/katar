@@ -1,4 +1,6 @@
 <?php
+namespace Katar\Parsers;
+
 /**
  * An expression is either
  *  HTML

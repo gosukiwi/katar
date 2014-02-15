@@ -1,4 +1,6 @@
 <?php
+namespace Katar;
+
 /**
  * Receives an array of tokens and translates them onto PHP
  *
@@ -13,7 +15,7 @@ class KatarParser
 
     public function __construct() {
         $this->tokenizer = null;
-        $this->expression_parser = new ExpressionParser;
+        $this->expression_parser = new Parsers\ExpressionParser;
     }
 
     public function setTokenizer($tokenizer) {

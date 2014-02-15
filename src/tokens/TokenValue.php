@@ -1,4 +1,6 @@
 <?php
+namespace Katar\Tokens;
+
 class TokenValue extends Token
 {
     public function __construct() {

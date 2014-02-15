@@ -1,4 +1,6 @@
 <?php
+namespace Katar\Parsers;
+
 class HTMLParser extends BaseParser
 {
     public function parse(&$tokens) {

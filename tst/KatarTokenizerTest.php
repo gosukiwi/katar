@@ -6,7 +6,7 @@ class KatarTokenizerTest extends PHPUnit_Framework_TestCase
     private $tokenizer;
 
     public function setUp() {
-        $this->tokenizer = new KatarTokenizer();
+        $this->tokenizer = new \Katar\KatarTokenizer();
     }
 
     public function testValue() {

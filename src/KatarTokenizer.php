@@ -1,4 +1,6 @@
 <?php
+namespace Katar;
+
 /**
  * Katar tokenizer class, used to generate an array of tokens from a string.
  *
@@ -12,14 +14,14 @@ class KatarTokenizer
     public function __construct() {
         $this->tokens = array();
 
-        $this->tokens[] = new TokenFilteredValue();
-        $this->tokens[] = new TokenValue();
-        $this->tokens[] = new TokenIfOpen();
-        $this->tokens[] = new TokenElse();
-        $this->tokens[] = new TokenElseIf();
-        $this->tokens[] = new TokenIfClose();
-        $this->tokens[] = new TokenForOpen();
-        $this->tokens[] = new TokenForClose();
+        $this->tokens[] = new Tokens\TokenFilteredValue();
+        $this->tokens[] = new Tokens\TokenValue();
+        $this->tokens[] = new Tokens\TokenIfOpen();
+        $this->tokens[] = new Tokens\TokenElse();
+        $this->tokens[] = new Tokens\TokenElseIf();
+        $this->tokens[] = new Tokens\TokenIfClose();
+        $this->tokens[] = new Tokens\TokenForOpen();
+        $this->tokens[] = new Tokens\TokenForClose();
     }
 
     public function tokenize($source) {

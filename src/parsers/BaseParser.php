@@ -1,4 +1,6 @@
 <?php
+namespace Katar\Parsers;
+
 /**
  * A parser which translates an array of tokens onto PHP
  */
@@ -19,14 +21,14 @@ class BaseParser
                 ? "Ran out of tokens, expected $expected."
                 : 'Ran out of tokens.';
 
-            throw new Exception($message);
+            throw new \Exception($message);
         }
 
         $token = array_shift($array);
         $type = $token[0];
 
         if(!is_null($expected) && $type != $expected) {
-            throw new Exception("Invalid token, got $type, expected $expected.");
+            throw new \Exception("Invalid token, got $type, expected $expected.");
         }
 
         return $token;
@@ -41,7 +43,7 @@ class BaseParser
      */
     protected function peek(&$array) {
         if(count($array) == 0) {
-            throw new Exception('Tokens array is empty, cannot peek');
+            throw new \Exception('Tokens array is empty, cannot peek');
         }
 
         return $array[0];

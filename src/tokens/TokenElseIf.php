@@ -1,4 +1,6 @@
 <?php
+namespace Katar\Tokens;
+
 class TokenElseIf extends Token
 {
     public function __construct() {

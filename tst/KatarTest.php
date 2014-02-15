@@ -6,7 +6,7 @@ class KatarTest extends PHPUnit_Framework_TestCase
     private $katar;
 
     public function setUp() {
-        $this->katar = new Katar(__DIR__ . '/cache');
+        $this->katar = new \Katar\Katar(__DIR__ . '/cache');
     }
 
     public function testCompile() {
