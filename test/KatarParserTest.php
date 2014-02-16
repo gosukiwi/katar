@@ -68,6 +68,12 @@ class KatarParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<p><?php echo $myobj->test(); ?></p>', $value);
     }
 
+    public function testFilteredValue() {
+        $str = '<p>{{ $person->name | strtoupper }}</p>';
+        $value = $this->compile($str);
+        $this->assertEquals('<p><?php echo strtoupper($person->name); ?></p>', $value);
+    }
+
     private function compile($str) {
         $tokens = $this->parser->compile($str);
         return $tokens;

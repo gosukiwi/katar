@@ -77,7 +77,7 @@ class Katar
         $compiled = null;
 
         if(!file_exists($cache_file) || filemtime($cache_file) < filemtime($file)) {
-            $compiled = $this->parser->compile($source);
+            $compiled = $this->compileString($source);
             file_put_contents($cache_file, $compiled);
         }
 
@@ -87,6 +87,17 @@ class Katar
         } else {
             return $compiled;
         }
+    }
+
+    /**
+     * Compiles a string containing Katar source code onto PHP
+     *
+     * @param string $str The string to be compiled
+     *
+     * @return Compiled PHP source code
+     */
+    public function compileString($str) {
+        return $this->parser->compile($str);
     }
 }
 

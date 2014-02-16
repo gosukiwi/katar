@@ -25,6 +25,7 @@ to provide a folder path, Katar will save all cached files there, once Katar is
 instantiated, all you need to do is call the ```compile``` method and provide 
 a file path to compile the desired file.
 
+    // the cache directory is "cache/"
     $katar = new \Katar\Katar('cache/');
     // compile myFile and include the compiled PHP file
     $katar->compile('myFile.katar.php');

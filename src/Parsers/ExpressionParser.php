@@ -18,6 +18,7 @@ class ExpressionParser extends BaseParser
         $for_parser = new ForParser;
         $if_parser = new IfParser;
         $value_parser = new ValueParser;
+        $filtered_value_parser = new FilteredValueParser;
         $html_parser = new HTMLParser;
 
         switch($type) {
@@ -25,12 +26,14 @@ class ExpressionParser extends BaseParser
             return $if_parser->parse($tokens);
         case 'FOR_OPEN':
             return $for_parser->parse($tokens);
+        case 'FILTERED_VALUE':
+            return $filtered_value_parser->parse($tokens);
         case 'VALUE':
             return $value_parser->parse($tokens);
         case 'HTML':
             return $html_parser->parse($tokens);
         default:
-            throw new Exception("Could not parse expression, invalid token '$type'");
+            throw new \Exception("Could not parse expression, invalid token '$type'");
         }
     }
 }
