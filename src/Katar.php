@@ -22,18 +22,10 @@ class Katar
             return;
         }
 
-        $name = str_replace('Katar\\', '', $class);
-
-        if($name == 'Tokenizer') {
-            require_once(__DIR__ . '/Tokenizer.php');
-        } else if($name == 'Parser') {
-            require_once(__DIR__ . '/Parser.php');
-        } else if(false !== strpos($name, '\\')) {
-            list($folder, $class) = explode('\\', $name);
-            $file = __DIR__ . '/' . $folder . '/' . $class . '.php';
-            if(file_exists($file)) {
-                require_once($file);
-            }
+        $ds = DIRECTORY_SEPARATOR; 
+        $name = str_replace(array('Katar\\', '\\'), array(__DIR__ . $ds, $ds), $class) . '.php';
+        if(file_exists($name)) {
+            require_once($name);
         }
     }
 
