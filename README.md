@@ -22,7 +22,7 @@ PHP and Katar!
     {>
         @this is escaped code, everything inside the escape tags won't get
         processed by Katar.
-    }>
+    <}
 
 # Usage
 Katar is the main class for using the library, when instantiating it you need
