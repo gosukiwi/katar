@@ -1,6 +1,6 @@
 {
     "name": "gosukiwi/katar",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "type": "library",
     "description": "Beautiful and flexible template engine for PHP",
     "keywords": ["php","template engine", "template", "katar"],
