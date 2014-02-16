@@ -8,7 +8,7 @@ namespace Katar;
  * when this happens the compile method can compile from a string instead
  * of an array of tokens.
  */
-class KatarParser
+class Parser
 {
     private $tokenizer;
     private $expression_parser;

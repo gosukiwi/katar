@@ -7,7 +7,7 @@ namespace Katar;
  * The array is in the format [type, value], the type is always a string, the
  * value can change, it is either a string or an array.
  */
-class KatarTokenizer
+class Tokenizer
 {
     private $tokens;
 

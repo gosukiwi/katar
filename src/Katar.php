@@ -24,11 +24,11 @@ class Katar
 
         $name = str_replace('Katar\\', '', $class);
 
-        if($name == 'KatarTokenizer') {
-            require_once(__DIR__ . '/KatarTokenizer.php');
-        } else if($name == 'KatarParser') {
-            require_once(__DIR__ . '/KatarParser.php');
-        } else {
+        if($name == 'Tokenizer') {
+            require_once(__DIR__ . '/Tokenizer.php');
+        } else if($name == 'Parser') {
+            require_once(__DIR__ . '/Parser.php');
+        } else if(false !== strpos($name, '\\')) {
             list($folder, $class) = explode('\\', $name);
             $file = __DIR__ . '/' . $folder . '/' . $class . '.php';
             if(file_exists($file)) {
@@ -43,8 +43,8 @@ class Katar
     public function __construct($views_cache) {
         $this->views_cache = $views_cache;
 
-        $tokenizer = new KatarTokenizer();
-        $this->parser = new KatarParser();
+        $tokenizer = new Tokenizer();
+        $this->parser = new Parser();
         $this->parser->setTokenizer($tokenizer);
     }
 
