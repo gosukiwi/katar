@@ -45,7 +45,7 @@ so by calling the ```compileString``` method.
     
     $code = $katar->compileString($myKatarString);
 
-# Using Katar with Composer
+## Using Katar with Composer
 There are several ways to include Katar in your project, with Composer's beeing
 the prefered one. To do that simply add it as a dependency in your 
 ```composer.json``` file.
@@ -86,4 +86,13 @@ Once you register your filter, you can call it by doing
 # Contributing
 If you like Katar and would like to contribute just pick an issue, send me
 a pull request and if everything seems right it will get merged :)
+
+# Versioning
+Katar uses [Semantic Versioning](http://semver.org/), quoting from their website:
+
+> Given a version number MAJOR.MINOR.PATCH, increment the:
+> MAJOR version when you make incompatible API changes,
+> MINOR version when you add functionality in a backwards-compatible manner, and
+> PATCH version when you make backwards-compatible bug fixes.
+
 
