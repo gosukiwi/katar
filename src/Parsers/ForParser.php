@@ -18,7 +18,7 @@ class ForParser extends BaseParser
             if($type == 'FOR_CLOSE') {
                 // pop the element, and add the value
                 $this->pop($tokens);
-                $output .= '<?php endfor; ?>' . "\n";
+                $output .= '<?php endforeach; ?>' . "\n";
                 break;
             } else {
                 $output .= $expression_parser->parse($tokens);

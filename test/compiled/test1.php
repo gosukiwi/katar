@@ -10,6 +10,6 @@
 
 <?php foreach($people as $person): ?>
     <p><?php echo $person->name; ?></p>
-<?php endfor; ?>
+<?php endforeach; ?>
 
 <p>My name is <?php echo $name; ?></p>
