@@ -19,6 +19,11 @@ PHP and Katar!
 
     <?php echo 'Now I don\'t want to use Katar, I just use PHP'; ?>
 
+    {>
+        @this is escaped code, everything inside the escape tags won't get
+        processed by Katar.
+    }>
+
 # Usage
 Katar is the main class for using the library, when instantiating it you need
 to provide a folder path, Katar will save all cached files there, once Katar is

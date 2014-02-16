@@ -1,11 +1,11 @@
 <?php
 namespace Katar\Tokens;
 
-class TokenValue extends Token
+class TokenEscape extends Token
 {
     public function __construct() {
-        $this->type = 'VALUE';
-        $this->rule = '/^{{\s*(.*?)\s*}}$/';
+        $this->type = 'ESCAPE';
+        $this->rule = '/^{>(.*?)<}$/';
     }
 
     protected function parse_matches($matches) {

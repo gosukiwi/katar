@@ -12,6 +12,12 @@ class KatarParserTest extends PHPUnit_Framework_TestCase
         $this->parser->setTokenizer($this->tokenizer);
     }
 
+    public function testEscape() {
+        $str = "I'm html {> {{escape}} this <}.";
+        $result = $this->compile($str);
+        $this->assertEquals("I'm html  {{escape}} this .", $result);
+    }
+
     public function testIf() {
         $str = "@if \$a == 0\n<p>A is 0</p>\n@endif\n";
         $result = $this->compile($str);

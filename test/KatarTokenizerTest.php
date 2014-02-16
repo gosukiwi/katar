@@ -38,9 +38,21 @@ class KatarTokenizerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<p>{ hello }</p>', $html[1]);
     }
 
+    public function testEscape() {
+        $str = "<p>I'm escaping {> @escape {{this}} <}</p>";
+        $tokens = $this->tokenizer->tokenize($str);
+        $escape = $tokens[1];
+
+        $this->assertEquals($escape[1], ' @escape {{this}} ');
+        $this->assertEquals(3, count($tokens));
+    }
+
     public function testEmbeddedAt() {
         $str = "@if true\n<p>Hello my mail is some@gmail.com</p>\n@endif\n";
         $tokens = $this->tokenizer->tokenize($str);
+        $html = $tokens[1];
+        $this->assertEquals("<p>Hello my mail is some@gmail.com</p>\n", $html[1]);
+        $this->assertEquals(3, count($tokens));
     }
 
     public function testIf() {

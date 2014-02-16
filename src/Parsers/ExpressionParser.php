@@ -20,6 +20,7 @@ class ExpressionParser extends BaseParser
         $value_parser = new ValueParser;
         $filtered_value_parser = new FilteredValueParser;
         $html_parser = new HTMLParser;
+        $escape_parser = new EscapeParser;
 
         switch($type) {
         case 'IF_OPEN':
@@ -32,6 +33,8 @@ class ExpressionParser extends BaseParser
             return $value_parser->parse($tokens);
         case 'HTML':
             return $html_parser->parse($tokens);
+        case 'ESCAPE':
+            return $escape_parser->parse($tokens);
         default:
             throw new \Exception("Could not parse expression, invalid token '$type'");
         }

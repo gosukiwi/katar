@@ -14,6 +14,7 @@ class Tokenizer
     public function __construct() {
         $this->tokens = array();
 
+        $this->tokens[] = new Tokens\TokenEscape();
         $this->tokens[] = new Tokens\TokenFilteredValue();
         $this->tokens[] = new Tokens\TokenValue();
         $this->tokens[] = new Tokens\TokenIfOpen();
@@ -37,7 +38,8 @@ class Tokenizer
             // ignore all html, it's basically whitespace
             if(strlen($str) == 1) {
                 if($str == '@') {
-                    // all @ commands must start on a new line on their own
+                    // match @ directive
+                    // all directives must start on a new line on their own
                     $last_line = trim(end(explode("\n", $html)));
                     if(!empty($last_line)) {
                         // if it's not empty, it means there's something else
@@ -46,7 +48,12 @@ class Tokenizer
                         $html .= $char;
                         continue;
                     }
+                } else if($str == '>' && substr($html, -1) == '{') {
+                    // match escape
+                    $html = substr($html, 0, -1);
+                    $str = '{' . $str;
                 } else if($str == '{' && substr($html, -1) == '{') {
+                    // match value
                     $html = substr($html, 0, -1);
                     $str = '{' . $str;
                 } else {
