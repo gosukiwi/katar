@@ -67,7 +67,7 @@ class Katar
      */
     public function compile($file, $include_file = true) {
         if(!file_exists($file)) {
-            throw new Exception("Could not compile $file, file not found");
+            throw new \Exception("Could not compile $file, file not found");
         }
 
         $source = file_get_contents($file);
