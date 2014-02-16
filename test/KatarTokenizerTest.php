@@ -30,6 +30,12 @@ class KatarTokenizerTest extends PHPUnit_Framework_TestCase
         $str = '{{ hello.world }}';
         $tokens = $this->tokenizer->tokenize($str);
         $this->assertEquals('hello.world', $tokens[0][1]);
+
+        // test
+        $str = '<p>{ hello }</p>';
+        $tokens = $this->tokenizer->tokenize($str);
+        $html = $tokens[0];
+        $this->assertEquals('<p>{ hello }</p>', $html[1]);
     }
 
     public function testEmbeddedAt() {
