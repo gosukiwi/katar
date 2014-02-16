@@ -32,12 +32,17 @@ class KatarTokenizerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('hello.world', $tokens[0][1]);
     }
 
+    public function testEmbeddedAt() {
+        $str = "@if true\n<p>Hello my mail is some@gmail.com</p>\n@endif\n";
+        $tokens = $this->tokenizer->tokenize($str);
+    }
+
     public function testIf() {
         $str = "@if \$name > 0\n<p>hello mang</p>\n@endif\n";
         $tokens = $this->tokenizer->tokenize($str);
         $this->assertEquals('$name > 0', $tokens[0][1]);
 
-        $str = "@if \$name > 0\n<p>hello mang</p>\n@else\n<p>byebye</p>@endif\n";
+        $str = "@if \$name > 0\n<p>hello mang</p>\n@else\n<p>byebye</p>\n@endif\n";
         $tokens = $this->tokenizer->tokenize($str);
         $else = $tokens[2];
         $endif = $tokens[4];
@@ -60,7 +65,7 @@ class KatarTokenizerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('person', $for_open[1][0]);
         $this->assertEquals('people', $for_open[1][1]);
 
-        $str = "@for person in people\n<p>this is html <3</p>@endfor\n";
+        $str = "@for person in people\n<p>this is html <3</p>\n@endfor\n";
         $tokens = $this->tokenizer->tokenize($str);
 
         $for_open = $tokens[0];
@@ -69,7 +74,7 @@ class KatarTokenizerTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('person', $for_open[1][0]);
         $this->assertEquals('people', $for_open[1][1]);
-        $this->assertEquals('<p>this is html <3</p>', $html[1]);
+        $this->assertEquals("<p>this is html <3</p>\n", $html[1]);
         $this->assertEquals('', $for_close[1]);
     }
 

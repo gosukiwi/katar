@@ -35,10 +35,22 @@ class Tokenizer
             $str .= $char;
 
             // ignore all html, it's basically whitespace
-            if(strlen($str) == 1 && $str != '{' && $str != '@') {
-                $str = '';
-                $html .= $char;
-                continue;
+            if(strlen($str) == 1) {
+                if($str != '{' && $str != '@') {
+                    $str = '';
+                    $html .= $char;
+                    continue;
+                } else if($str == '@') {
+                    // all @ commands must start on a new line on their own
+                    $last_line = trim(end(explode("\n", $html)));
+                    if(!empty($last_line)) {
+                        // if it's not empty, it means there's something else
+                        // on the line, just treat it as HTML
+                        $str = '';
+                        $html .= $char;
+                        continue;
+                    }
+                }
             } 
 
             if(!empty($html)) {
@@ -63,5 +75,4 @@ class Tokenizer
         return $result;
     }
 }
-
 
