@@ -32,6 +32,7 @@ a file path to compile the desired file.
 
     // the cache directory is "cache/"
     $katar = new \Katar\Katar('cache/');
+
     // compile myFile and include the compiled PHP file
     $katar->compile('myFile.katar.php');
     
@@ -62,7 +63,7 @@ the prefered one. To do that simply add it as a dependency in your
     }
 
 Now by running ```php composer.phar install``` composer will download Katar
-for you.
+for you. Until version 1.0 it's recommended to use "dev-master" as version.
 
 # Custom Filters
 You can add custom filters to Katar, just create a base class to hold your 
