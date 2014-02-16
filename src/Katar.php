@@ -56,6 +56,22 @@ class Katar
     }
 
     /**
+     * Registers a filter function to Katar
+     *
+     * Example: $katar->registerFilter(array($obj, 'myFilter'));
+     *
+     * @param string $name The name of the filter, as it will be called from 
+     *  whithin the template
+     *
+     * @param mixed $filter The filter to be registered, it can be either a string
+     * or an array, containing an instance of an object in the first element, and a string
+     * with the method to be called in the second element.
+     */
+    public function registerFilter($name, $filter) {
+        $this->parser->registerFilter($name, $filter);
+    }
+
+    /**
      * Compiles a Katar file to a PHP file
      *
      * @param string $file The path of the file to be compiled
@@ -65,7 +81,7 @@ class Katar
      * @return If $include_file is false, returns the compiled source code, if
      *  not, returns null and includes the compiled file.
      */
-    public function compile($file, $include_file = true) {
+    public function compile($file, $env = array(), $include_file = true) {
         if(!file_exists($file)) {
             throw new \Exception("Could not compile $file, file not found");
         }
@@ -82,6 +98,7 @@ class Katar
         }
 
         if($include_file) {
+            extract($env);
             require($cache_file);
             return null;
         } else {

@@ -1,0 +1,3 @@
+<h1>Test Katar</h1>
+
+<p>My name is {{ $name | custom_trim }}</p>

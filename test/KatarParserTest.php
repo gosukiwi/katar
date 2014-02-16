@@ -72,6 +72,15 @@ class KatarParserTest extends PHPUnit_Framework_TestCase
         $str = '<p>{{ $person->name | strtoupper }}</p>';
         $value = $this->compile($str);
         $this->assertEquals('<p><?php echo strtoupper($person->name); ?></p>', $value);
+
+        $str = '<p>{{ $person->name | strtoupper | trim }}</p>';
+        $value = $this->compile($str);
+        $this->assertEquals('<p><?php echo strtoupper(trim($person->name)); ?></p>', $value);
+
+        // test custom filter
+        $str = '<p>{{ $person->name | custom_trim }}</p>';
+        $value = $this->compile($str);
+        $this->assertEquals('<p><?php echo \Katar\Parsers\FilteredValueParser::filter(\'custom_trim\', $person->name); ?></p>', $value);
     }
 
     private function compile($str) {

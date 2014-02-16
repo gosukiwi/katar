@@ -15,7 +15,7 @@ PHP and Katar!
         <p>{{ $person->name }}</p>
     @endfor
 
-    <p>My name is {{ $name }}</p>
+    <p>My name is {{ $name | strtoupper }}</p>
 
     <?php echo 'Now I don\'t want to use Katar, I just use PHP'; ?>
 
@@ -51,6 +51,31 @@ the prefered one. To do that simply add it as a dependency in your
 Now by running ```php composer.phar install``` composer will download Katar
 for you.
 
-# TODO
-There's still some polishing to do, as soon as It's finished I'll start the
-versioning :)
+# Custom Filters
+You can add custom filters to Katar, just create a base class to hold your 
+filter
+
+    class MyFilter
+    {
+        public function doSomething($str) {
+            return trim($str);
+        }
+    }
+
+And register it to Katar
+
+    $filter = new MyFilter;
+    $katar->registerFilter('do_something', array($filter, 'doSomething'));
+
+The first argument is the name, it doesn't really have to match the method name
+of your class, then, an array containing an instance of your class and the
+method name to use when the filter is called.
+
+Once you register your filter, you can call it by doing
+
+    <p>{{ $my_value | do_something }}</p>
+
+# Contributing
+If you like Katar and would like to contribute just pick an issue, send me
+a pull request and if everything seems right it will get merged :)
+

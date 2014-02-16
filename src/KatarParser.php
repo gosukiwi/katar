@@ -16,6 +16,11 @@ class KatarParser
     public function __construct() {
         $this->tokenizer = null;
         $this->expression_parser = new Parsers\ExpressionParser;
+        $this->filters = array();
+    }
+
+    public function registerFilter($name, $filter) {
+        Parsers\FilteredValueParser::registerFilter($name, $filter);
     }
 
     public function setTokenizer($tokenizer) {
