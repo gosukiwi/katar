@@ -2,14 +2,14 @@
 Directives are translated to PHP code, everything else is ignored. The 
 following directives are available in Katar
 
-# Value
+## Value
 The value directive just evaluates and renders the value defined inside
 
 ```php
 <p>Hello! Your name is {{ $name }}</p>
 ````
 
-# If
+## If
 Syntactic sugar for PHP's IF. The following example demonstrates how to use
 this control structure.
 
@@ -23,7 +23,7 @@ this control structure.
 @endif
 ```
 
-# For
+## For
 Syntactic sugar for PHP's FOREACH.
 
 ```php
