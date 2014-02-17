@@ -24,70 +24,9 @@ PHP and Katar!
         processed by Katar.
     <}
 
-# Usage
-Katar is the main class for using the library, when instantiating it you need
-to provide a folder path, Katar will save all cached files there, once Katar is
-instantiated, all you need to do is call the ```compile``` method and provide 
-a file path to compile the desired file.
-
-    // the cache directory is "cache/"
-    $katar = new \Katar\Katar('cache/');
-
-    // compile myFile and include the compiled PHP file
-    $katar->compile('myFile.katar.php');
-    
-    // compile with added context, so the compiled file can use
-    // $name and $age variables
-    $katar->compile('myFile.katar.php', array(
-        'name' => 'Mike',
-        'age' => 22
-    ));
-
-    // compile and get compiled code
-    $code = $katar->compile('myFile.katar.php', array(), false);
-
-If you just want to compile a string containing Katar source code, you can do
-so by calling the ```compileString``` method.
-    
-    $code = $katar->compileString($myKatarString);
-
-## Using Katar with Composer
-There are several ways to include Katar in your project, with Composer's beeing
-the prefered one. To do that simply add it as a dependency in your 
-```composer.json``` file.
-
-    {
-        "require": {
-            "gosukiwi/katar": "dev-master"
-        }
-    }
-
-Now by running ```php composer.phar install``` composer will download Katar
-for you. Until version 1.0 it's recommended to use "dev-master" as version.
-
-# Custom Filters
-You can add custom filters to Katar, just create a base class to hold your 
-filter
-
-    class MyFilter
-    {
-        public function doSomething($str) {
-            return trim($str);
-        }
-    }
-
-And register it to Katar
-
-    $filter = new MyFilter;
-    $katar->registerFilter('do_something', array($filter, 'doSomething'));
-
-The first argument is the name, it doesn't really have to match the method name
-of your class, then, an array containing an instance of your class and the
-method name to use when the filter is called.
-
-Once you register your filter, you can call it by doing
-
-    <p>{{ $my_value | do_something }}</p>
+# Documentation
+Documentaiton can be found at ```docs/```, or you can [read it online on GitHub]
+(https://github.com/gosukiwi/katar/tree/master/doc/index.md).
 
 # Contributing
 If you like Katar and would like to contribute just pick an issue, send me
@@ -101,5 +40,4 @@ Katar uses [Semantic Versioning](http://semver.org/), quoting from their website
 > MAJOR version when you make incompatible API changes,
 > MINOR version when you add functionality in a backwards-compatible manner, and
 > PATCH version when you make backwards-compatible bug fixes.
-
 

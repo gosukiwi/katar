@@ -16,7 +16,7 @@ class KatarTest extends PHPUnit_Framework_TestCase
 
     public function testCompile() {
         $file = __DIR__ . '/katar/test1.katar';
-        $this->katar->compile($file, array(), false);
+        $this->katar->compile($file);
 
         $cache = file_get_contents(__DIR__ . '/cache/' . md5($file));
         $precompiled = file_get_contents(__DIR__ . '/compiled/test1.php');
@@ -30,7 +30,7 @@ class KatarTest extends PHPUnit_Framework_TestCase
         $cf = new ExampleFilter();
         $this->katar->registerFilter('custom_trim', array($cf, 'custom_trim'));
 
-        $compiled = $this->katar->compile(__DIR__ . '/katar/testCustomFilter.katar', array('name' => 'Mike'), false);
+        //$compiled = $this->katar->compile(__DIR__ . '/katar/testCustomFilter.katar', array('name' => 'Mike'), false);
     }
 
     private function rmdir($dirPath) {

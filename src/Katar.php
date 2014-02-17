@@ -66,16 +66,40 @@ class Katar
     }
 
     /**
-     * Compiles a Katar file to a PHP file
+     * Compiles a Katar file to a PHP file, and includes it
      *
      * @param string $file The path of the file to be compiled
-     * @param boolean $include_file Whether the compiled file will be included
-     *  after compilation
      *
-     * @return If $include_file is false, returns the compiled source code, if
-     *  not, returns null and includes the compiled file.
+     * @param array $env The environmental variables to be added to the included 
+     * file's context
      */
-    public function compile($file, $env = array(), $include_file = true) {
+    public function render($file, $env = array()) {
+        if(!file_exists($file)) {
+            throw new \Exception("Could not compile $file, file not found");
+        }
+
+        $source = file_get_contents($file);
+        $source_update = filemtime($file);
+
+        $cache_file = $this->views_cache . '/' . md5($file);
+
+        if(!file_exists($cache_file) || filemtime($cache_file) < filemtime($file)) {
+            $compiled = $this->compileString($source);
+            file_put_contents($cache_file, $compiled);
+        }
+
+        extract($env);
+        require($cache_file);
+    }
+
+    /**
+     * Compiles a Katar file to a PHP file, returning the compiled code
+     *
+     * @param string $file The path of the file to be compiled
+     *
+     * @return string The compiled PHP code
+     */
+    public function compile($file) {
         if(!file_exists($file)) {
             throw new \Exception("Could not compile $file, file not found");
         }
@@ -89,15 +113,11 @@ class Katar
         if(!file_exists($cache_file) || filemtime($cache_file) < filemtime($file)) {
             $compiled = $this->compileString($source);
             file_put_contents($cache_file, $compiled);
+        } else {
+            $compiled = file_get_contents($cache_file);
         }
 
-        if($include_file) {
-            extract($env);
-            require($cache_file);
-            return null;
-        } else {
-            return $compiled;
-        }
+        return $compiled;
     }
 
     /**
