@@ -1,9 +1,9 @@
 # Katar
 Welcome to Katar documentation! You can see the index below:
 
- * [Installation](installation.md)
+ * [Installation and general usage](installation.md)
  * [Directives](directives.md)
- * [Custom Filters](custom-filters)
+ * [Custom filters](custom-filters)
 
 # Contributing
 If you like Katar and would like to contribute just pick an issue, send me
