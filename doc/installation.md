@@ -25,20 +25,22 @@ provide a file path to compile the desired file.
     $katar = new \Katar\Katar('cache/');
 
     // compile myFile and include the compiled PHP file
-    $katar->compile('myFile.katar.php');
+    $katar->render('myFile.katar.php');
     
     // compile with added context, so the compiled file can use
     // $name and $age variables
-    $katar->compile('myFile.katar.php', array(
+    $katar->render('myFile.katar.php', array(
         'name' => 'Mike',
         'age' => 22
     ));
 
-    // compile and get compiled code
-    $code = $katar->compile('myFile.katar.php', array(), false);
+    // compile and get compiled PHP code as a string
+    $code = $katar->compile('myFile.katar.php');
 
 If you just want to compile a string containing Katar source code, you can do
 so by calling the ```compileString``` method.
     
+    // compiles the string, and returns another string containing the
+    // compiled PHP code
     $code = $katar->compileString($myKatarString);
 
