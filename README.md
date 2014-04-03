@@ -12,7 +12,7 @@ PHP and Katar!
     @endif
 
     @for $person in $people
-        <p>{{ $person->name }}</p>
+        <p>Person #{{ $for_index + 1 }}: {{ $person->name }}</p>
     @endfor
 
     <p>My name is {{ $name | strtoupper }}</p>

@@ -8,7 +8,8 @@ class ForParser extends BaseParser
         $for_open_token = $this->pop($tokens, 'FOR_OPEN');
 
         // create output so far
-        $output = '<?php foreach(' . $for_open_token[1][1] . ' as ' . 
+        $output = '<?php $for_index = 0; foreach(' . 
+            $for_open_token[1][1] . ' as ' . 
             $for_open_token[1][0] . '): ?>' . "\n";
 
         $expression_parser = new ExpressionParser;
@@ -18,7 +19,7 @@ class ForParser extends BaseParser
             if($type == 'FOR_CLOSE') {
                 // pop the element, and add the value
                 $this->pop($tokens);
-                $output .= '<?php endforeach; ?>' . "\n";
+                $output .= '<?php $for_index++; endforeach; ?>' . "\n";
                 break;
             } else {
                 $output .= $expression_parser->parse($tokens);

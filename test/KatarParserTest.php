@@ -41,12 +41,12 @@ class KatarParserTest extends PHPUnit_Framework_TestCase
     public function testFor() {
         $str = "@for \$person in \$people\n<p>Hello</p>\n@endfor\n";
         $value = $this->compile($str);
-        $this->assertEquals("<?php foreach(\$people as \$person): ?>\n<p>Hello</p>\n<?php endforeach; ?>\n", $value);
+        $this->assertEquals("<?php \$for_index = 0; foreach(\$people as \$person): ?>\n<p>Hello</p>\n<?php \$for_index++; endforeach; ?>\n", $value);
 
         // test several expressions
         $str = "@for \$person in \$people\n<p>Hello</p>\nI'm {{ \$name }}\n@endfor\n";
         $value = $this->compile($str);
-        $this->assertEquals("<?php foreach(\$people as \$person): ?>\n<p>Hello</p>\nI'm <?php echo \$name; ?>\n<?php endforeach; ?>\n", $value);
+        $this->assertEquals("<?php \$for_index = 0; foreach(\$people as \$person): ?>\n<p>Hello</p>\nI'm <?php echo \$name; ?>\n<?php \$for_index++; endforeach; ?>\n", $value);
 
         // test missing the @endfor
         $this->setExpectedException('Exception');
