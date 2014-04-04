@@ -28,6 +28,8 @@ Syntactic sugar for PHP's FOREACH.
 
 ```php
 @for $person in $people
+    {> You also have access to a variable called $for_index, which holds the current index of the loop <}
+    <p>#{{ $for_index }}</p>
     <p>Name: {{ $person->name }}</p>
     <p>Age: {{ $person->age }}</p>
 @endfor
