@@ -25,7 +25,7 @@ PHP and Katar!
     <}
 
 # Documentation
-Documentaiton can be found at ```docs/```, or you can [read it online on GitHub]
+Documentation can be found at ```docs/```, or you can [read it online on GitHub]
 (https://github.com/gosukiwi/katar/tree/master/doc/index.md).
 
 # Contributing
