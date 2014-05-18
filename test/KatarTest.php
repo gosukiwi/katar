@@ -25,12 +25,12 @@ class KatarTest extends PHPUnit_Framework_TestCase
 
     public function testCustomFilter() {
         // this one is hard to test... TODO
-        
         require(__DIR__ . '/filters/ExampleFilter.php');
         $cf = new ExampleFilter();
         $this->katar->registerFilter('custom_trim', array($cf, 'custom_trim'));
 
-        //$compiled = $this->katar->compile(__DIR__ . '/katar/testCustomFilter.katar', array('name' => 'Mike'), false);
+        $compiled = $this->katar->compile(__DIR__ . 
+            '/katar/testCustomFilter.katar', array('name' => 'Mike'), false);
     }
 
     private function rmdir($dirPath) {
