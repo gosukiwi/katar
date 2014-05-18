@@ -15,7 +15,7 @@ namespace Katar;
  */
 class Katar
 {
-    public static $VERSION = '0.2.0';
+    public static $VERSION = '0.3.0';
 
     public static function autoload($class) {
         if(strpos($class, 'Katar\\') !== 0) {
