@@ -20,7 +20,7 @@ class KatarTest extends PHPUnit_Framework_TestCase
 
         $cache = file_get_contents(__DIR__ . '/cache/' . md5($file));
         $precompiled = file_get_contents(__DIR__ . '/compiled/test1.php');
-        $this->assertEquals($cache, $precompiled);
+        $this->assertEquals($precompiled, $cache);
     }
 
     public function testCustomFilter() {

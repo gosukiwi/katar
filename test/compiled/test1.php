@@ -8,7 +8,7 @@
 
 <h2>For demonstration</h2>
 
-<?php $for_index = 0; foreach($people as $person): ?>
+<?php $for_index = 0; foreach($people as $person): ?>
     <p><?php echo $person->name; ?></p>
 <?php $for_index++; endforeach; ?>
 
