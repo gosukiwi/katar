@@ -208,7 +208,7 @@ class Parser
             $for_open_token[1][0] . '): ?>' . "\n";
 
         while(true) {
-            list($type, $value) = $this->peek($tokens);
+            list($type, $value) = $this->peek();
 
             if($type == 'FOR_CLOSE') {
                 // pop the element, and add the value

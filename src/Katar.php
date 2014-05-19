@@ -78,12 +78,10 @@ class Katar
             throw new \Exception("Could not compile $file, file not found");
         }
 
-        $source = file_get_contents($file);
-        $source_update = filemtime($file);
-
         $cache_file = $this->views_cache . '/' . md5($file);
 
         if(!file_exists($cache_file) || filemtime($cache_file) < filemtime($file)) {
+            $source = file_get_contents($file);
             $compiled = $this->compileString($source);
             file_put_contents($cache_file, $compiled);
         }
@@ -104,13 +102,20 @@ class Katar
             throw new \Exception("Could not compile $file, file not found");
         }
 
-        $source = file_get_contents($file);
+        if(!file_exists($this->views_cache) && !mkdir($this->views_cache)) {
+            throw new \Exception("Could no create cache directory." . 
+                " Make sure you have write permissions.");
+        }
+
         $source_update = filemtime($file);
 
         $cache_file = $this->views_cache . '/' . md5($file);
         $compiled = null;
 
-        if(!file_exists($cache_file) || filemtime($cache_file) < filemtime($file)) {
+        if( !file_exists($cache_file) 
+            || filemtime($cache_file) < filemtime($file)) {
+            // get the katar source code and compile it
+            $source = file_get_contents($file);
             $compiled = $this->compileString($source);
             file_put_contents($cache_file, $compiled);
         } else {
