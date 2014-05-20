@@ -9,20 +9,88 @@ namespace Katar;
  */
 class Tokenizer
 {
-    private $tokens;
+    private $tokenList;
 
     public function __construct() {
-        $this->tokens = array();
-
-        $this->tokens[] = new Tokens\TokenEscape();
-        $this->tokens[] = new Tokens\TokenFilteredValue();
-        $this->tokens[] = new Tokens\TokenValue();
-        $this->tokens[] = new Tokens\TokenIfOpen();
-        $this->tokens[] = new Tokens\TokenElse();
-        $this->tokens[] = new Tokens\TokenElseIf();
-        $this->tokens[] = new Tokens\TokenIfClose();
-        $this->tokens[] = new Tokens\TokenForOpen();
-        $this->tokens[] = new Tokens\TokenForClose();
+        $this->tokenList = array(
+            // IF_OPEN token
+            array(
+                'IF_OPEN',
+                '/^[\s\t]*@if\s*(.*?)\s*\n$/',
+                function ($matches) {
+                    return $matches[1][0];
+                }
+            ),
+            // ELSE token
+            array(
+                'ELSE',
+                '/^[\s\t]*@else\s*\n$/',
+                function ($matches) {
+                    return '';
+                }
+            ),
+            // ELSE_IF token
+            array(
+                'ELSE_IF',
+                '/^[\s\t]*@else\s+if\s*(.*?)\s*\n$/',
+                function ($matches) {
+                    return $matches[1][0];
+                }
+            ),
+            // IF_CLOSE token
+            array(
+                'IF_CLOSE',
+                '/^[\s\t]*@endif\s*\n$/',
+                function ($matches) {
+                    return '';
+                }
+            ),
+            // FILTERED_VALUE token
+            array(
+                'FILTERED_VALUE',
+                '/{{\s*(.+?)(\s*\|\s*([a-zA-Z_]+)\s*)+}}/',
+                function ($matches) {
+                    $str = array_shift(str_replace(array('{{', '}}'), array('', ''), $matches[0]));
+                    $output = array();
+                    foreach(explode('|', $str) as $filter) {
+                        $output[] = trim($filter);
+                    }
+                    return $output;
+                }
+            ),
+            // VALUE token
+            array(
+                'VALUE',
+                '/^{{\s*(.*?)\s*}}$/',
+                function ($matches) {
+                    return $matches[1][0];
+                }
+            ),
+            // FOR_OPEN token
+            array(
+                'FOR_OPEN',
+                '/^[\s\t]*@for\s+(.+?)\s+in\s+(.+?)\n$/',
+                function ($matches) {
+                    return array($matches[1][0], $matches[2][0]);
+                }
+            ),
+            // FOR_CLOSE token
+            array(
+                'FOR_CLOSE',
+                '/^[\s\t]*@endfor\s*\n$/',
+                function ($matches) {
+                    return '';
+                }
+            ),
+            // ESCAPE token
+            array(
+                'ESCAPE',
+                '/^{>(.*?)<}$/',
+                function ($matches) {
+                    return $matches[1][0];
+                }
+            ),
+        );
     }
 
     public function tokenize($source) {
@@ -68,11 +136,12 @@ class Tokenizer
                 $html = '';
             }
 
-            foreach($this->tokens as $token) {
-                $value = $token->match($str);
+            foreach($this->tokenList as $token) {
+                $value = $this->match($token, $str);
                 if(!is_null($value)) {
-                    $result[] = array($token->type, $value);
+                    $result[] = array($token[0], $value);
                     $str = '';
+                    break;
                 }
             }
         }
@@ -83,6 +152,19 @@ class Tokenizer
         }
 
         return $result;
+    }
+    
+    private function match($token, $str) {
+        // Try match
+        $matches = null;
+        preg_match($token[1], $str, $matches, PREG_OFFSET_CAPTURE);
+
+        // Return matches or null if none
+        if(count($matches) > 0) {
+            return $token[2]($matches);
+        }
+
+        return null;
     }
 }
 
