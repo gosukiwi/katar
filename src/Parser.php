@@ -184,7 +184,7 @@ class Parser
      */
     public function parseHTML() {
         $token = $this->pop('HTML');
-        return '$output .= \'' . htmlentities($token[1], ENT_QUOTES) . "';\n";
+        return '$output .= \'' . $this->stripQuotes($token[1]) . "';\n";
     }
 
     /**
@@ -228,7 +228,7 @@ class Parser
      */
     public function parseEscape() {
         $token = $this->pop('ESCAPE');
-        return '$output .= \'' . htmlentities($token[1], ENT_QUOTES) . "';\n";
+        return '$output .= \'' . $this->stripQuotes($token[1]) . "';\n";
     }
 
     /**
@@ -251,6 +251,16 @@ class Parser
         }
 
         return '$output .= ' . $opening . $value . $closing . ";\n";
+    }
+
+    private function stripQuotes($str) {
+        return str_replace(array(
+            '"',
+            "'",
+        ), array(
+            '&quot;',
+            '&#039;'
+        ), $str);
     }
 }
 

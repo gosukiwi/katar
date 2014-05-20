@@ -108,7 +108,7 @@ class Tokenizer
                 if($str == '@') {
                     // match @ directive
                     // all directives must start on a new line on their own
-                    $last_line = trim(end(explode("\n", $html)));
+                    $last_line = @trim(end(explode("\n", $html)));
                     if(!empty($last_line)) {
                         // if it's not empty, it means there's something else
                         // on the line, just treat it as HTML
