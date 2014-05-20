@@ -6,7 +6,7 @@ class KatarTest extends PHPUnit_Framework_TestCase
     private $katar;
 
     public function setUp() {
-        mkdir(__DIR__ . '/cache');
+        @mkdir(__DIR__ . '/cache');
         $this->katar = new \Katar\Katar(__DIR__ . '/cache');
     }
 
@@ -20,10 +20,23 @@ class KatarTest extends PHPUnit_Framework_TestCase
 
         $cache = file_get_contents(__DIR__ . '/cache/' . md5($file));
         $precompiled = file_get_contents(__DIR__ . '/compiled/test1.php');
+
         $this->assertEquals($precompiled, $cache);
     }
 
-    public function testCustomFilter() {
+    public function testRender() {
+        $file = __DIR__ . '/katar/test1.katar';
+        $result = $this->katar->render($file, array(
+            'people' => array(
+                array('name' => 'Mike'),
+            ),
+        ));
+
+        // TODO
+        //$this->assertEquals('', $result);
+    }
+
+    /*public function testCustomFilter() {
         // this one is hard to test... TODO
         require(__DIR__ . '/filters/ExampleFilter.php');
         $cf = new ExampleFilter();
@@ -31,7 +44,7 @@ class KatarTest extends PHPUnit_Framework_TestCase
 
         $compiled = $this->katar->compile(__DIR__ . 
             '/katar/testCustomFilter.katar', array('name' => 'Mike'), false);
-    }
+    }*/
 
     private function rmdir($dirPath) {
         if (! is_dir($dirPath)) {

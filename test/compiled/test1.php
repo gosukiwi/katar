@@ -1,15 +1,32 @@
-<h1>Test Katar</h1>
+<?php
+function katar_50ef8c5b55bc21e8690c8eb917e2ebb7($args) {
+extract($args);
+$output = null;
+$output .= '&lt;h1&gt;Test Katar&lt;/h1&gt;
 
-<?php if($age > 22): ?>
-    <p>The age is bigger than 22</p>
-<?php else: ?>
-    <p>The age is not bigger than 22</p>
-<?php endif; ?>
+';
+if($age > 22) {
+$output .= '    &lt;p&gt;The age is bigger than 22&lt;/p&gt;
+';
+} else {
+$output .= '    &lt;p&gt;The age is not bigger than 22&lt;/p&gt;
+';
+}
+$output .= '
+&lt;h2&gt;For demonstration&lt;/h2&gt;
 
-<h2>For demonstration</h2>
+';
+$for_index = 0; foreach($people as $person) {
+$output .= '    &lt;p&gt;';
+$output .= $person['name'];
+$output .= '&lt;/p&gt;
+';
+$for_index++; }
+$output .= '
+&lt;p&gt;My name is ';
+$output .= $name;
+$output .= '&lt;/p&gt;
+';
 
-<?php $for_index = 0; foreach($people as $person): ?>
-    <p><?php echo $person->name; ?></p>
-<?php $for_index++; endforeach; ?>
-
-<p>My name is <?php echo $name; ?></p>
+return $output;
+}

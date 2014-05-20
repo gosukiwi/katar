@@ -9,7 +9,7 @@
 <h2>For demonstration</h2>
 
 @for $person in $people
-    <p>{{ $person->name }}</p>
+    <p>{{ $person['name'] }}</p>
 @endfor
 
 <p>My name is {{ $name }}</p>

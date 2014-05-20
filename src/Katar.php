@@ -78,16 +78,12 @@ class Katar
             throw new \Exception("Could not compile $file, file not found");
         }
 
-        $cache_file = $this->views_cache . '/' . md5($file);
+        $hash = md5($file);
+        $this->compile($file);
+        $cache_file = $this->views_cache . '/' . $hash;
 
-        if(!file_exists($cache_file) || filemtime($cache_file) < filemtime($file)) {
-            $source = file_get_contents($file);
-            $compiled = $this->compileString($source);
-            file_put_contents($cache_file, $compiled);
-        }
-
-        extract($env);
-        require($cache_file);
+        require_once($cache_file);
+        return call_user_func('katar_' . $hash, $env);
     }
 
     /**
@@ -109,7 +105,8 @@ class Katar
 
         $source_update = filemtime($file);
 
-        $cache_file = $this->views_cache . '/' . md5($file);
+        $hash = md5($file);
+        $cache_file = $this->views_cache . '/' . $hash;
         $compiled = null;
 
         if( !file_exists($cache_file) 
@@ -117,6 +114,9 @@ class Katar
             // get the katar source code and compile it
             $source = file_get_contents($file);
             $compiled = $this->compileString($source);
+            $compiled = "<?php\nfunction katar_" . $hash .
+                "(\$args) {\nextract(\$args);\n\$output = null;\n" . $compiled .
+                "\nreturn \$output;\n}\n";
             file_put_contents($cache_file, $compiled);
         } else {
             $compiled = file_get_contents($cache_file);

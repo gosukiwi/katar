@@ -120,7 +120,7 @@ class Parser
     private function parseIf() {
         // consume required tokens
         $if_open = $this->pop('IF_OPEN');
-        $output = '<?php if(' . $if_open[1] . '): ?>' . "\n";
+        $output = 'if(' . $if_open[1] . ') {' . "\n";
 
         $seeking = true;
          while($seeking) {
@@ -129,16 +129,16 @@ class Parser
             switch($type) {
             case 'IF_CLOSE':
                 $this->pop();
-                $output .= "<?php endif; ?>\n";
+                $output .= "}\n";
                 $seeking = false;
                 break;
             case 'ELSE':
                 $this->pop();
-                $output .= "<?php else: ?>\n";
+                $output .= "} else {\n";
                 break;
             case 'ELSE_IF':
                 $token = $this->pop();
-                $output .= "<?php elseif(" . $token[1] . "): ?>\n";
+                $output .= '} elseif(' . $token[1] . ") {\n";
                 break;
             default:
                 $output .= $this->parseExpression();
@@ -184,7 +184,7 @@ class Parser
      */
     public function parseHTML() {
         $token = $this->pop('HTML');
-        return $token[1];
+        return '$output .= \'' . htmlentities($token[1], ENT_QUOTES) . "';\n";
     }
 
     /**
@@ -192,7 +192,7 @@ class Parser
      */
     public function parseValue() {
         $token = $this->pop('VALUE');
-        return '<?php echo ' . $token[1] . '; ?>';
+        return '$output .= ' . $token[1] . ";\n";
     }
 
     /**
@@ -203,9 +203,9 @@ class Parser
         $for_open_token = $this->pop('FOR_OPEN');
 
         // create output so far
-        $output = '<?php $for_index = 0; foreach(' . 
+        $output = '$for_index = 0; foreach(' . 
             $for_open_token[1][1] . ' as ' . 
-            $for_open_token[1][0] . '): ?>' . "\n";
+            $for_open_token[1][0] . ') {' . "\n";
 
         while(true) {
             list($type, $value) = $this->peek();
@@ -213,7 +213,7 @@ class Parser
             if($type == 'FOR_CLOSE') {
                 // pop the element, and add the value
                 $this->pop();
-                $output .= '<?php $for_index++; endforeach; ?>' . "\n";
+                $output .= '$for_index++; }' . "\n";
                 break;
             } else {
                 $output .= $this->parseExpression();
@@ -228,7 +228,7 @@ class Parser
      */
     public function parseEscape() {
         $token = $this->pop('ESCAPE');
-        return $token[1];
+        return '$output .= \'' . htmlentities($token[1], ENT_QUOTES) . "';\n";
     }
 
     /**
@@ -250,7 +250,7 @@ class Parser
             }
         }
 
-        return '<?php echo ' . $opening . $value . $closing . '; ?>';
+        return '$output .= ' . $opening . $value . $closing . ";\n";
     }
 }
 
