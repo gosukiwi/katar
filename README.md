@@ -1,7 +1,6 @@
 # Katar
 Katar is a simple PHP templating engine based on Blade. It was designed to
-be simple, and have a clean syntax. Katar doesn't get in your way, you can mix
-PHP and Katar! 
+be simple, and have a clean syntax. 
 
 ## Syntax
 
@@ -16,8 +15,6 @@ PHP and Katar!
     @endfor
 
     <p>My name is {{ $name | strtoupper }}</p>
-
-    <?php echo 'Now I don\'t want to use Katar, I just use PHP'; ?>
 
     {>
         @this is escaped code, everything inside the escape tags won't get
