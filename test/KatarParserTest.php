@@ -44,8 +44,8 @@ class KatarParserTest extends PHPUnit_Framework_TestCase
         // test several expressions
         $str = "@if \$a == 0\n<p>{{ \$a }} is 0</p>\n@endif\n";
         $result = $this->compile($str);
-        $this->assertEquals("if(\$a == 0) {\n\$output .= '&lt;p&gt;';\n" . 
-            "\$output .= \$a;\n\$output .= ' is 0&lt;/p&gt;\n';\n}\n",
+        $this->assertEquals("if(\$a == 0) {\n\$output .= '<p>';\n" . 
+            "\$output .= \$a;\n\$output .= ' is 0</p>\n';\n}\n",
             $result);
     }
 
@@ -54,7 +54,7 @@ class KatarParserTest extends PHPUnit_Framework_TestCase
         $value = $this->compile($str);
         $this->assertEquals(
             "\$for_index = 0; foreach(\$people as \$person) {\n".
-            "\$output .= '&lt;p&gt;Hello&lt;/p&gt;\n';\n" .
+            "\$output .= '<p>Hello</p>\n';\n" .
             "\$for_index++; }\n",
             $value);
 
@@ -63,7 +63,7 @@ class KatarParserTest extends PHPUnit_Framework_TestCase
         $value = $this->compile($str);
         $this->assertEquals(
             "\$for_index = 0; foreach(\$people as \$person) {\n".
-            "\$output .= '&lt;p&gt;Hello&lt;/p&gt;\nI&#039;m ';\n" .
+            "\$output .= '<p>Hello</p>\nI&#039;m ';\n" .
             "\$output .= \$name;\n" .
             "\$output .= '\n';\n" .
             "\$for_index++; }\n",
@@ -86,25 +86,25 @@ class KatarParserTest extends PHPUnit_Framework_TestCase
         $str = '<p>{{ $person->name }}</p>';
         $value = $this->compile($str);
         $this->assertEquals(
-            "\$output .= '&lt;p&gt;';\n".
+            "\$output .= '<p>';\n".
             "\$output .= \$person->name;\n".
-            "\$output .= '&lt;/p&gt;';\n",
+            "\$output .= '</p>';\n",
             $value);
 
         $str = '<p>{{ $name }}</p>';
         $value = $this->compile($str);
         $this->assertequals(
-            "\$output .= '&lt;p&gt;';\n".
+            "\$output .= '<p>';\n".
             "\$output .= \$name;\n".
-            "\$output .= '&lt;/p&gt;';\n",
+            "\$output .= '</p>';\n",
             $value);
 
         $str = '<p>{{ $myobj->test() }}</p>';
         $value = $this->compile($str);
         $this->assertequals(
-            "\$output .= '&lt;p&gt;';\n".
+            "\$output .= '<p>';\n".
             "\$output .= \$myobj->test();\n".
-            "\$output .= '&lt;/p&gt;';\n",
+            "\$output .= '</p>';\n",
             $value);
     }
 
@@ -112,27 +112,27 @@ class KatarParserTest extends PHPUnit_Framework_TestCase
         $str = '<p>{{ $person->name | strtoupper }}</p>';
         $value = $this->compile($str);
         $this->assertequals(
-            "\$output .= '&lt;p&gt;';\n".
+            "\$output .= '<p>';\n".
             "\$output .= strtoupper(\$person->name);\n".
-            "\$output .= '&lt;/p&gt;';\n",
+            "\$output .= '</p>';\n",
             $value);
 
         $str = '<p>{{ $person->name | strtoupper | trim }}</p>';
         $value = $this->compile($str);
         $this->assertequals(
-            "\$output .= '&lt;p&gt;';\n".
+            "\$output .= '<p>';\n".
             "\$output .= strtoupper(trim(\$person->name));\n".
-            "\$output .= '&lt;/p&gt;';\n",
+            "\$output .= '</p>';\n",
             $value);
 
         // test custom filter
         $str = '<p>{{ $person->name | custom_trim }}</p>';
         $value = $this->compile($str);
         $this->assertequals(
-            "\$output .= '&lt;p&gt;';\n".
+            "\$output .= '<p>';\n".
             "\$output .= \Katar\Parser::filter('custom_trim', " .
                 "\$person->name);\n".
-            "\$output .= '&lt;/p&gt;';\n",
+            "\$output .= '</p>';\n",
             $value);
     }
 
