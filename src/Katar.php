@@ -31,9 +31,11 @@ class Katar
 
     private $views_cache;
     private $parser;
+    private $currFile;
 
     public function __construct($views_cache) {
         $this->views_cache = $views_cache;
+        $this->currFile = null;
 
         $tokenizer = new Tokenizer();
         $this->parser = new Parser();
@@ -78,12 +80,21 @@ class Katar
             throw new \Exception("Could not compile $file, file not found");
         }
 
+        $this->currFile = $file;
         $hash = md5($file);
         $this->compile($file);
         $cache_file = $this->views_cache . '/' . $hash;
 
+        // Set a custom error handler
+        set_error_handler(array($this, 'onTemplateError'));
+
         require_once($cache_file);
-        return call_user_func('katar_' . $hash, $env);
+        $output = call_user_func('katar_' . $hash, $env);
+
+        // Restore the handler as we leave Katar
+        restore_error_handler();
+
+        return $output;
     }
 
     /**
@@ -135,8 +146,18 @@ class Katar
     public function compileString($str) {
         return $this->parser->compile($str);
     }
+
+    /**
+     * Throw an exception if there's been an error in the template,
+     * this is registered as error handler before rendering any template.
+     */
+    public function onTemplateError($errno, $errstr) {
+        throw new KatarRuntimeException('There has been an error in your ' .
+            'Katar template: ' . $this->currFile . '<br>' . $errstr);
+    }
 }
 
 // register Katar's autoloader
 spl_autoload_register(__NAMESPACE__ .'\Katar::autoload');
 
+class KatarRuntimeException extends \Exception {}
