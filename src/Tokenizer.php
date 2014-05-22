@@ -90,6 +90,14 @@ class Tokenizer
                     return $matches[1][0];
                 }
             ),
+            // USE token
+            array(
+                'USE',
+                '/^[\s\t]*@use\s+(.*?)\s*\n$/',
+                function ($matches) {
+                    return $matches[1][0];
+                }
+            ),
         );
     }
 

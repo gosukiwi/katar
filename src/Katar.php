@@ -23,20 +23,27 @@ class Katar
         }
 
         $ds = DIRECTORY_SEPARATOR; 
-        $name = str_replace(array('Katar\\', '\\'), array(__DIR__ . $ds, $ds), $class) . '.php';
+        $name = str_replace(array('Katar\\', '\\'), array(__DIR__ . $ds, $ds),
+            $class) . '.php';
         if(file_exists($name)) {
             require_once($name);
         }
     }
 
     private $views_cache;
+    private $views_path;
     private $parser;
     private $currFile;
 
-    public function __construct($views_cache) {
-        $this->views_cache = $views_cache;
-        $this->currFile = null;
+    public function __construct($views_path, $views_cache = null) {
+        $this->views_path = $views_path;
 
+        if(is_null($views_cache)) {
+            $views_cache = $views_path . '/cache';
+        }
+        $this->views_cache = $views_cache;
+
+        $this->currFile = null;
         $tokenizer = new Tokenizer();
         $this->parser = new Parser();
         $this->parser->setTokenizer($tokenizer);
@@ -76,6 +83,8 @@ class Katar
      * file's context
      */
     public function render($file, $env = array()) {
+        $file = $this->views_path . '/' . $file;
+
         if(!file_exists($file)) {
             throw new \Exception("Could not compile $file, file not found");
         }
@@ -125,9 +134,28 @@ class Katar
             // get the katar source code and compile it
             $source = file_get_contents($file);
             $compiled = $this->compileString($source);
+
+            // Check for directives, for now only one, which is
+            // an USE
+            if(preg_match_all('/^-- use: (.*?);/', $compiled, $matches,
+                PREG_SET_ORDER)) {
+                foreach($matches as $use) {
+                    $result = $this->compile($this->views_path . '/' . $use[1]);
+                    // because files are saved as functions, we have to
+                    // remove the function header and the return
+                    // statement
+                    $result = array_slice(explode("\n", $result), 4, -3);
+                    $result = implode("\n", $result);
+                    // finally replace the --use directive with the
+                    // contents of the file compiled
+                    $compiled = str_replace($use[0], $result, $compiled);
+                }
+            }
+
             $compiled = "<?php\nfunction katar_" . $hash .
                 "(\$args) {\nextract(\$args);\n\$output = null;\n" . $compiled .
                 "\nreturn \$output;\n}\n";
+
             file_put_contents($cache_file, $compiled);
         } else {
             $compiled = file_get_contents($cache_file);

@@ -7,29 +7,31 @@ class KatarTest extends PHPUnit_Framework_TestCase
 
     public function setUp() {
         @mkdir(__DIR__ . '/cache');
-        $this->katar = new \Katar\Katar(__DIR__ . '/cache');
+        $this->katar = new \Katar\Katar(__DIR__ . '/katar', 
+            __DIR__ . '/cache');
     }
 
     public function tearDown() {
         $this->rmdir(__DIR__ . '/cache');
     }
 
-    public function testCompile() {
-        $file = __DIR__ . '/katar/test1.katar';
+    /*public function testCompile() {
+        $file = 'test1.katar';
         $this->katar->compile($file);
 
         $cache = file_get_contents(__DIR__ . '/cache/' . md5($file));
         $precompiled = file_get_contents(__DIR__ . '/compiled/test1.php');
 
         $this->assertEquals($precompiled, $cache);
-    }
+    }*/
 
     public function testRender() {
-        $file = __DIR__ . '/katar/test1.katar';
-        $result = $this->katar->render($file, array(
+        $result = $this->katar->render('test1.katar', array(
             'people' => array(
                 array('name' => 'Mike'),
             ),
+            'age' => 22,
+            'name' => 'John',
         ));
 
         // TODO

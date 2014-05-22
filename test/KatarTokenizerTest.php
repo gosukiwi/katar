@@ -105,4 +105,11 @@ class KatarTokenizerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('strtoupper', $filtered_value[1][1]);
         $this->assertEquals('other', $filtered_value[1][2]);
     }
+
+    public function testUse() {
+        $str = "@use ../base.html.katar\n";
+        $tokens = $this->tokenizer->tokenize($str);
+        $this->assertEquals($tokens[0][0], 'USE');
+        $this->assertEquals($tokens[0][1], '../base.html.katar');
+    }
 }

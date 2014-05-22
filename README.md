@@ -38,3 +38,6 @@ Katar uses [Semantic Versioning](http://semver.org/), quoting from their website
 > MINOR version when you add functionality in a backwards-compatible manner, and
 > PATCH version when you make backwards-compatible bug fixes.
 
+# TODO
+
+ * Filters deserve their own file
