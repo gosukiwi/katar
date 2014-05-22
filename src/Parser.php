@@ -262,7 +262,7 @@ class Parser
         // this will later be replaced by Katar to the evaluated
         // result of the compiled $file
         // pretty much like a compiler directive
-        return "-- use: $file;\n";
+        return "\$output .= \Katar\Katar::getInstance()->render($file, \$args);\n";
     }
 
     private function stripQuotes($str) {

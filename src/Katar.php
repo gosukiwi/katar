@@ -3,6 +3,8 @@
  * Katar is a simple template engine for PHP with a clean syntax which doesn't
  * get in your way.
  *
+ * This class provides a singleton interface to the Katar compiler.
+ *
  * @author Federico Ramirez <fedra.arg@gmail.com>
  * @licence MIT
  */
@@ -34,9 +36,27 @@ class Katar
     private $views_path;
     private $parser;
     private $currFile;
+    private $debug;
+    private static $instance = null;
 
-    public function __construct($views_path, $views_cache = null) {
+    public static function getInstance($views_path = null, 
+        $views_cache = null, $debug = null) {
+        if(is_null(self::$instance)) {
+            self::$instance = new Katar($views_path, $views_cache, $debug);
+        }
+
+        return self::$instance;
+    }
+
+    public function __construct($views_path, $views_cache = null,
+        $debug = false) {
+
+        if(!is_null(self::$instance)) {
+            return self::$instance;
+        }
+
         $this->views_path = $views_path;
+        $this->debug = $debug;
 
         if(is_null($views_cache)) {
             $views_cache = $views_path . '/cache';
@@ -47,6 +67,8 @@ class Katar
         $tokenizer = new Tokenizer();
         $this->parser = new Parser();
         $this->parser->setTokenizer($tokenizer);
+
+        self::$instance = $this;
     }
 
     /**
@@ -89,19 +111,30 @@ class Katar
             throw new \Exception("Could not compile $file, file not found");
         }
 
+        // Cache compiled HTML
+        $cacheHash = md5($file . serialize($env));
+        $cache_file = $this->views_cache . "/$cacheHash.cache";
+        if( !$this->debug && (file_exists($cache_file) 
+            && filemtime($cache_file) > filemtime($file))) {
+            return file_get_contents($cache_file);
+        }
+
+        // If it's not cached, load compiled file and execute
         $this->currFile = $file;
         $hash = md5($file);
         $this->compile($file);
-        $cache_file = $this->views_cache . '/' . $hash;
+        $compiled_file = $this->views_cache . '/' . $hash;
 
         // Set a custom error handler
         set_error_handler(array($this, 'onTemplateError'));
 
-        require_once($cache_file);
+        require_once($compiled_file);
         $output = call_user_func('katar_' . $hash, $env);
 
         // Restore the handler as we leave Katar
         restore_error_handler();
+
+        file_put_contents($cache_file, $output);
 
         return $output;
     }
@@ -126,37 +159,19 @@ class Katar
         $source_update = filemtime($file);
 
         $hash = md5($file);
-        $cache_file = $this->views_cache . '/' . $hash;
+        $compiled_file = $this->views_cache . '/' . $hash;
         $compiled = null;
 
-        if( !file_exists($cache_file) 
-            || filemtime($cache_file) < filemtime($file)) {
+        if( $this->debug || (!file_exists($compiled_file) 
+            || filemtime($compiled_file) < filemtime($file))) {
             // get the katar source code and compile it
             $source = file_get_contents($file);
             $compiled = $this->compileString($source);
-
-            // Check for directives, for now only one, which is
-            // an USE
-            if(preg_match_all('/^-- use: (.*?);/', $compiled, $matches,
-                PREG_SET_ORDER)) {
-                foreach($matches as $use) {
-                    $result = $this->compile($this->views_path . '/' . $use[1]);
-                    // because files are saved as functions, we have to
-                    // remove the function header and the return
-                    // statement
-                    $result = array_slice(explode("\n", $result), 4, -3);
-                    $result = implode("\n", $result);
-                    // finally replace the --use directive with the
-                    // contents of the file compiled
-                    $compiled = str_replace($use[0], $result, $compiled);
-                }
-            }
-
             $compiled = "<?php\nfunction katar_" . $hash .
                 "(\$args) {\nextract(\$args);\n\$output = null;\n" . $compiled .
                 "\nreturn \$output;\n}\n";
 
-            file_put_contents($cache_file, $compiled);
+            file_put_contents($compiled_file, $compiled);
         } else {
             $compiled = file_get_contents($cache_file);
         }
