@@ -173,8 +173,8 @@ class Parser
             return $this->parseHTML();
         case 'ESCAPE':
             return $this->parseEscape();
-        case 'USE':
-            return $this->parseUse();
+        case 'INCLUDE':
+            return $this->parseInclude();
         default:
             throw new SyntaxErrorException(
                 "Could not parse expression, invalid token '$type'");
@@ -255,13 +255,9 @@ class Parser
         return '$output .= ' . $opening . $value . $closing . ";\n";
     }
 
-    public function parseUse() {
-        $token = $this->pop('USE');
+    public function parseInclude() {
+        $token = $this->pop('INCLUDE');
         $file = $token[1];
-
-        if(!file_exists($file)) {
-            throw new \Exception("Used file not found $file");
-        }
 
         // this will later be replaced by Katar to the evaluated
         // result of the compiled $file

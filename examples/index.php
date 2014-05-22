@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../src/Katar.php';
 
-$katar = new Katar\Katar(__DIR__);
+$katar = new Katar\Katar(
+    __DIR__ . '/views', __DIR__ . '/cache');
 
 $example_1 = $katar->render('example-1.katar.html', array(
     'people' => array (
