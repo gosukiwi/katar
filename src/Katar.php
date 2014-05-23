@@ -212,7 +212,15 @@ class Katar
      * @return Compiled PHP source code
      */
     public function compileString($str) {
-        return $this->parser->compile($str);
+        $result = null;
+        try {
+            $result = $this->parser->compile($str);
+        } catch (\Exception $e) {
+            throw new SyntaxErrorException("Syntax error in $this->currFile " .
+                $e->getMessage());
+        }
+
+        return $result;
     }
 
     /**

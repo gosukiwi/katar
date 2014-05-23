@@ -82,7 +82,7 @@ class Parser
      */
     private function peek() {
         if(count($this->tokens) == 0) {
-            throw new \Exception('Tokens array is empty, cannot peek');
+            throw new \Exception('Unexpected end of input.');
         }
 
         return $this->tokens[0];
@@ -109,8 +109,8 @@ class Parser
         $output = 'if(' . $if_open[1] . ') {' . "\n";
 
         $seeking = true;
-         while($seeking) {
-            list($type, $value) = $this->peek($tokens);
+        while($seeking) {
+            list($type, $value) = $this->peek();
 
             switch($type) {
             case 'IF_CLOSE':
@@ -142,8 +142,8 @@ class Parser
      *  | ESCAPE)
      */
     public function parseExpression() {
-        // check first token
         $token = $this->peek();
+        // check first token
         $type = $token[0];
 
         switch($type) {

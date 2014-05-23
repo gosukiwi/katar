@@ -3,7 +3,7 @@ require_once __DIR__ . '/../src/Katar.php';
 
 
 $katar = new Katar\Katar(
-    __DIR__ . '/views', __DIR__ . '/cache');
+    __DIR__ . '/views', __DIR__ . '/cache', true);
 
 // Register custom filter
 $filter = new DogeFilter;
