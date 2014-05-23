@@ -106,10 +106,10 @@ class KatarTokenizerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('other', $filtered_value[1][2]);
     }
 
-    public function testUse() {
-        $str = "@use ../base.html.katar\n";
+    public function testInclude() {
+        $str = "@include ../base.html.katar\n";
         $tokens = $this->tokenizer->tokenize($str);
-        $this->assertEquals($tokens[0][0], 'USE');
+        $this->assertEquals($tokens[0][0], 'INCLUDE');
         $this->assertEquals($tokens[0][1], '../base.html.katar');
     }
 }

@@ -130,7 +130,7 @@ class KatarParserTest extends PHPUnit_Framework_TestCase
         $value = $this->compile($str);
         $this->assertequals(
             "\$output .= '<p>';\n".
-            "\$output .= \Katar\Parser::filter('custom_trim', " .
+            "\$output .= \Katar\Katar::getInstance()->filter('custom_trim', " .
                 "\$person->name);\n".
             "\$output .= '</p>';\n",
             $value);

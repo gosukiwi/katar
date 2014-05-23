@@ -92,7 +92,7 @@ class Tokenizer
                     return $matches[1][0];
                 }
             ),
-            // USE token
+            // INCLUDE token
             array(
                 'INCLUDE',
                 '/^[\s\t]*@include\s+(.*?)\s*\n$/',
