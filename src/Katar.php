@@ -156,8 +156,6 @@ class Katar
                 " Make sure you have write permissions.");
         }
 
-        $source_update = filemtime($file);
-
         $hash = md5($file);
         $compiled_file = $this->views_cache . '/' . $hash;
         $compiled = null;
