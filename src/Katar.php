@@ -173,7 +173,7 @@ class Katar
      *
      * @return string The compiled PHP code
      */
-    public function compile($file) {
+    private function compile($file) {
         if(!file_exists($file)) {
             throw new \Exception("Could not compile $file, file not found");
         }
@@ -211,7 +211,7 @@ class Katar
      *
      * @return Compiled PHP source code
      */
-    public function compileString($str) {
+    private function compileString($str) {
         $result = null;
         try {
             $result = $this->parser->compile($str);
