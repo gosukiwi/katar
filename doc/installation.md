@@ -21,26 +21,21 @@ need to provide a folder path, Katar will save all cached files there, once
 Katar is instantiated, all you need to do is call the ```compile``` method and 
 provide a file path to compile the desired file.
 
-    // the cache directory is "cache/"
-    $katar = new \Katar\Katar('cache/');
+    // pass the directory where all our templates will be stored
+    // optionally you can specify the cache directory as second
+    // parameter
+    $katar = new \Katar\Katar(__DIR__ . '/templates');
 
-    // compile myFile and include the compiled PHP file
-    $katar->render('myFile.katar.php');
+    // compile myFile and store it in the $html variable
+    $html = $katar->render('myFile.katar.php');
     
     // compile with added context, so the compiled file can use
     // $name and $age variables
-    $katar->render('myFile.katar.php', array(
+    $html = $katar->render('myFile.katar.php', array(
         'name' => 'Mike',
         'age' => 22
     ));
 
-    // compile and get compiled PHP code as a string
-    $code = $katar->compile('myFile.katar.php');
-
-If you just want to compile a string containing Katar source code, you can do
-so by calling the ```compileString``` method.
-    
-    // compiles the string, and returns another string containing the
-    // compiled PHP code
-    $code = $katar->compileString($myKatarString);
+    // write our output
+    echo $html;
 

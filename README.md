@@ -2,7 +2,7 @@
 Katar is a simple PHP templating engine based on Blade. It was designed to
 be simple, and have a clean syntax. 
 
-## Syntax
+## Syntax at a glance
 
     @if $age > 22
         <p>The age is bigger than 22</p>
@@ -15,6 +15,8 @@ be simple, and have a clean syntax.
     @endfor
 
     <p>My name is {{ $name | strtoupper }}</p>
+
+    @import 'myFile.katar.html'
 
     {>
         @this is escaped code, everything inside the escape tags won't get

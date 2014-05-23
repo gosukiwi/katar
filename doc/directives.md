@@ -54,3 +54,35 @@ It's important to note that functions must only take one argument and return
 a string, you can [create your own filters](custom-filters.md) if you need more
 filters.
 
+## Include
+Using `include` you can import another Katar template file and evaluate it
+in the current environment.
+
+```html
+<!-- base.katar.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Katar Example</title>
+  </head>
+  <body>
+    <h1>Welcome to Katar!</h1>
+
+    @include $view
+  </body>
+</html>
+
+<!-- body.katar.html -->
+Hello! I'm an included view
+```
+
+Note that we use the `$view` variable to include our file. 
+
+```php
+$katar->render('base.katar.html', array(
+    'view' => 'body.katar.html',
+));
+```
+
+The included file is relative to the configured views path defined when
+instantiating Katar.
