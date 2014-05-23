@@ -22,3 +22,4 @@ Once you register your filter, you can call it by doing
     <p>{{ $my_value | do_something }}</p>
 
 
+[Go back](index.md)

@@ -1,6 +1,11 @@
 # Katar
-Katar is a simple PHP templating engine based on Blade. It was designed to
-be simple, and have a clean syntax. 
+Katar is a tiny PHP templating engine based on Blade. It was designed to
+be simple and clean.
+
+Katar is easy to include into any existing project, just require it with
+composer! It even has a Silex service provider if you are interested.
+
+For more information see the documentation.
 
 ## Syntax at a glance
 

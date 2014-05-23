@@ -86,3 +86,6 @@ $katar->render('base.katar.html', array(
 
 The included file is relative to the configured views path defined when
 instantiating Katar.
+
+
+[Go back](index.md)
