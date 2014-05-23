@@ -12,6 +12,7 @@ class Parser
 {
     private $tokenizer;
     private $tokens;
+    private $currLine;
 
     public function __construct() {
         $this->tokenizer = null;
@@ -23,6 +24,8 @@ class Parser
     }
 
     public function compile($tokens) {
+        $this->currLine = 0;
+
         // if we get an string, tokenize first
         if(is_string($tokens)) {
             if(!$this->tokenizer) {
@@ -82,23 +85,12 @@ class Parser
      */
     private function peek() {
         if(count($this->tokens) == 0) {
-            throw new \Exception('Unexpected end of input.');
+            throw new \Exception("Unexpected end of input at line 
+                $this->currLine .");
         }
 
         return $this->tokens[0];
     }
-
-    /**
-     * Parses a single terminal
-     *
-     * @param array $tokens An array of tokens, passed by reference
-     *
-     * @return string compiled PHP code
-     */
-    /*private function parseTerminal($terminal = null) {
-        $token = $this->pop($terminal);
-        return $token[1];
-    }*/
 
     /**
      * Parses an IF expression
@@ -107,6 +99,7 @@ class Parser
         // consume required tokens
         $if_open = $this->pop('IF_OPEN');
         $output = 'if(' . $if_open[1] . ') {' . "\n";
+        $this->currLine++;
 
         $seeking = true;
         while($seeking) {
@@ -117,14 +110,17 @@ class Parser
                 $this->pop();
                 $output .= "}\n";
                 $seeking = false;
+                $this->currLine++;
                 break;
             case 'ELSE':
                 $this->pop();
                 $output .= "} else {\n";
+                $this->currLine++;
                 break;
             case 'ELSE_IF':
                 $token = $this->pop();
                 $output .= '} elseif(' . $token[1] . ") {\n";
+                $this->currLine++;
                 break;
             default:
                 $output .= $this->parseExpression();
@@ -172,7 +168,9 @@ class Parser
      */
     public function parseHTML() {
         $token = $this->pop('HTML');
-        return '$output .= \'' . $this->stripQuotes($token[1]) . "';\n";
+        $value = $this->stripQuotes($token[1]);
+        $this->currLine += substr_count($value, "\n");
+        return '$output .= \'' . $value . "';\n";
     }
 
     /**
@@ -189,6 +187,7 @@ class Parser
     public function parseFor() {
         // consume required tokens
         $for_open_token = $this->pop('FOR_OPEN');
+        $this->currLine++;
 
         // create output so far
         $output = '$for_index = 0; foreach(' . 
@@ -202,6 +201,7 @@ class Parser
                 // pop the element, and add the value
                 $this->pop();
                 $output .= '$for_index++; }' . "\n";
+                $this->currLine++;
                 break;
             } else {
                 $output .= $this->parseExpression();
@@ -216,7 +216,9 @@ class Parser
      */
     public function parseEscape() {
         $token = $this->pop('ESCAPE');
-        return '$output .= \'' . $this->stripQuotes($token[1]) . "';\n";
+        $value = $this->stripQuotes($token[1]);
+        $this->currLine += substr_count($value, "\n");
+        return '$output .= \'' . $value . "';\n";
     }
 
     /**
@@ -245,11 +247,13 @@ class Parser
     public function parseInclude() {
         $token = $this->pop('INCLUDE');
         $file = $token[1];
+        $this->currLine++;
 
         // this will later be replaced by Katar to the evaluated
         // result of the compiled $file
         // pretty much like a compiler directive
-        return "\$output .= \Katar\Katar::getInstance()->render($file, \$args);\n";
+        return "\$output .= \Katar\Katar::getInstance()->render($file,"
+           . " \$args);\n";
     }
 
     private function stripQuotes($str) {

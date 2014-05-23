@@ -216,8 +216,8 @@ class Katar
         try {
             $result = $this->parser->compile($str);
         } catch (\Exception $e) {
-            throw new SyntaxErrorException("Syntax error in $this->currFile " .
-                $e->getMessage());
+            throw new SyntaxErrorException("Syntax error in $this->currFile: "
+                . $e->getMessage());
         }
 
         return $result;
