@@ -97,12 +97,16 @@ class Katar
     }
 
     /**
-     * Compiles a Katar file to a PHP file, and includes it
+     * Compiles a Katar file to a PHP file, and caches the output as
+     * HTML. Returns the HTML result of executing the Katar template
+     * with the given environment.
      *
      * @param string $file The path of the file to be compiled
+     * @param array $env The environmental variables to be added to the
+     *  included file's context
      *
-     * @param array $env The environmental variables to be added to the included 
-     * file's context
+     * @return string HTML code resulting in compiling the Katar template
+     *  with the given environment
      */
     public function render($file, $env = array()) {
         $file = $this->views_path . '/' . $file;

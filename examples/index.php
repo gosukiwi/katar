@@ -7,6 +7,8 @@ $katar = new Katar\Katar(
 $example_1 = $katar->render('base.katar.html', array(
     'people' => array (
         array('name' => 'Mike O\'Malley'),
+        array('name' => 'Alice'),
+        array('name' => 'Bob'),
     ),
     'view' => 'example-1.katar.html',
 ));
