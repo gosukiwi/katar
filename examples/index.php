@@ -1,16 +1,32 @@
 <?php
 require_once __DIR__ . '/../src/Katar.php';
 
-$katar = new Katar\Katar(
-    __DIR__ . '/views', __DIR__ . '/cache', true);
 
-$example_1 = $katar->render('base.katar.html', array(
+$katar = new Katar\Katar(
+    __DIR__ . '/views', __DIR__ . '/cache');
+
+// Register custom filter
+$filter = new DogeFilter;
+$katar->registerFilter('doge', array($filter, 'Doge'));
+
+// Render
+$html = $katar->render('base.katar.html', array(
     'people' => array (
-        array('name' => 'Mike O\'Malley'),
-        array('name' => 'Alice'),
-        array('name' => 'Bob'),
+        array('name' => 'Thomas O\'Malley'),
+        array('name' => 'Duchess'),
+        array('name' => 'Marie'),
+        array('name' => 'Berlioz'),
+        array('name' => 'Toulouse'),
     ),
-    'view' => 'example-1.katar.html',
+    'view' => 'body.katar.html',
 ));
 
-echo $example_1;
+echo $html;
+
+
+class DogeFilter
+{
+    public function Doge($str) {
+        return "so $str, much wow";
+    }
+}

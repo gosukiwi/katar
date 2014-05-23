@@ -50,7 +50,9 @@ class Tokenizer
                 'FILTERED_VALUE',
                 '/{{\s*(.+?)(\s*\|\s*([a-zA-Z_]+)\s*)+}}/',
                 function ($matches) {
-                    $str = array_shift(str_replace(array('{{', '}}'), array('', ''), $matches[0]));
+                    $arr = str_replace(array('{{', '}}'),
+                        array('', ''), $matches[0]);
+                    $str = array_shift($arr);
                     $output = array();
                     foreach(explode('|', $str) as $filter) {
                         $output[] = trim($filter);

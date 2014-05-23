@@ -2,6 +2,6 @@
 
 <ul>
 @for $person in $people
-  <li>Hello {{ $person['name'] }}! I'm Katar.</li>
+  <li>{{ $person['name'] | doge }}!</li>
 @endfor
 </ul>

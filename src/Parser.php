@@ -12,24 +12,10 @@ class Parser
 {
     private $tokenizer;
     private $tokens;
-    public static $filters = array();
 
     public function __construct() {
         $this->tokenizer = null;
         $this->tokens = array();
-    }
-
-    public static function registerFilter($name, $filter) {
-        self::$filters[$name] = $filter;
-    }
-
-    public static function filter($name, $arg) {
-        if(!array_key_exists($name, self::$filters)) {
-            throw new InvalidFilterException(
-                "Filter $filter could not be found");
-        }
-
-        return call_user_func_array(self::$filters[$name], array($arg));
     }
 
     public function setTokenizer($tokenizer) {
@@ -247,7 +233,8 @@ class Parser
                 $opening .= $filter . '(';
                 $closing .= ')';
             } else {
-                $opening .= '\Katar\Parser::filter(\'' . $filter . '\', ';
+                $opening .= '\Katar\Katar::getInstance()->filter(\'' .
+                    $filter . '\', ';
                 $closing .= ')';
             }
         }

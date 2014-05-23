@@ -38,6 +38,7 @@ class Katar
     private $currFile;
     private $debug;
     private static $instance = null;
+    private $filters;
 
     public static function getInstance($views_path = null, 
         $views_cache = null, $debug = null) {
@@ -57,6 +58,7 @@ class Katar
 
         $this->views_path = $views_path;
         $this->debug = $debug;
+        $this->filters = array();
 
         if(is_null($views_cache)) {
             $views_cache = $views_path . '/cache';
@@ -69,6 +71,18 @@ class Katar
         $this->parser->setTokenizer($tokenizer);
 
         self::$instance = $this;
+    }
+
+    /**
+     * Sets whether to use debug mode. In debug mode, cache is 
+     * generated but never used. Useful for develoment, but also
+     * optional as cache regenerates if template file is newer than
+     * the cache copy.
+     *
+     * @param boolean $debug Whether to use debug mode or not
+     */
+    public function setDebug($debug) {
+        $this->debug = $debug;
     }
 
     /**
@@ -93,7 +107,16 @@ class Katar
      * with the method to be called in the second element.
      */
     public function registerFilter($name, $filter) {
-        $this->parser->registerFilter($name, $filter);
+        $this->filters[$name] = $filter;
+    }
+
+    public function filter($name, $arg) {
+        if(!array_key_exists($name, $this->filters)) {
+            throw new InvalidFilterException(
+                "Filter $name could not be found");
+        }
+
+        return call_user_func_array($this->filters[$name], array($arg));
     }
 
     /**
